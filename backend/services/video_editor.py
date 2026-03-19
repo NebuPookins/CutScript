@@ -7,6 +7,7 @@ import logging
 import subprocess
 import tempfile
 import os
+from fractions import Fraction
 from pathlib import Path
 from typing import List
 
@@ -264,7 +265,7 @@ def get_video_info(input_path: str) -> dict:
             "width": int(video_stream.get("width", 0)),
             "height": int(video_stream.get("height", 0)),
             "codec": video_stream.get("codec_name", ""),
-            "fps": eval(video_stream.get("r_frame_rate", "0/1")) if "/" in video_stream.get("r_frame_rate", "") else 0,
+            "fps": float(Fraction(video_stream.get("r_frame_rate", "0/1"))) if "/" in video_stream.get("r_frame_rate", "") else 0,
         }
     except Exception as e:
         logger.error(f"Failed to get video info: {e}")
